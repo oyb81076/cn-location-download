@@ -13,10 +13,12 @@ const loaders: Array<(url: string) => Promise<Array<{ code: number, name: string
 export async function start({ depth, url }: { depth: number, url: string }) {
   const data = await load(url, 0, depth);
   console.log("加载完毕");
-  if (!existsSync(join(__dirname, "../build"))) {
-    mkdirSync(join(__dirname, "../build"));
+  if (!existsSync(join(__dirname, "../dist"))) {
+    mkdirSync(join(__dirname, "../dist"));
   }
-  writeFileSync(join(__dirname, "../build/data.json"), JSON.stringify(data, null, 2));
+  const dest = join(__dirname, "../dist/data.json");
+  writeFileSync(dest, JSON.stringify(data, null, 2));
+  console.log("文件已经成功写入到 " + dest);
 }
 async function load(url: string, index: number, depth: number): Promise<IEntity[]> {
   console.log(`%s %s %s`, index, depth, url);
