@@ -1,7 +1,7 @@
 # 省市区统计局爬虫
 安装 ``yarn install``
 # 帮助
-`` yarn build --help``
+``yarn build --help``
 # usage
 ``yarn build --depth=2 ``
 # options
