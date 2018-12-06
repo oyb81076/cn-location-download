@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "build": "ts-node src/index.ts",
-    "test": "jest"
+    "test": "jest --coverage"
   },
   "dependencies": {
     "@types/cheerio": "^0.22.10",
