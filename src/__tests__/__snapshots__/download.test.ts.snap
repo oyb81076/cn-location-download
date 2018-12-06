@@ -1,0 +1,130 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`depth=2 1`] = `
+Array [
+  Object {
+    "code": 1100000000,
+    "name": "北京市",
+  },
+  Object {
+    "code": 1200000000,
+    "name": "天津市",
+  },
+  Object {
+    "code": 1300000000,
+    "name": "河北省",
+  },
+  Object {
+    "code": 1400000000,
+    "name": "山西省",
+  },
+  Object {
+    "code": 1500000000,
+    "name": "内蒙古自治区",
+  },
+  Object {
+    "code": 2100000000,
+    "name": "辽宁省",
+  },
+  Object {
+    "code": 2200000000,
+    "name": "吉林省",
+  },
+  Object {
+    "code": 2300000000,
+    "name": "黑龙江省",
+  },
+  Object {
+    "code": 3100000000,
+    "name": "上海市",
+  },
+  Object {
+    "code": 3200000000,
+    "name": "江苏省",
+  },
+  Object {
+    "code": 3300000000,
+    "name": "浙江省",
+  },
+  Object {
+    "code": 3400000000,
+    "name": "安徽省",
+  },
+  Object {
+    "code": 3500000000,
+    "name": "福建省",
+  },
+  Object {
+    "code": 3600000000,
+    "name": "江西省",
+  },
+  Object {
+    "code": 3700000000,
+    "name": "山东省",
+  },
+  Object {
+    "code": 4100000000,
+    "name": "河南省",
+  },
+  Object {
+    "code": 4200000000,
+    "name": "湖北省",
+  },
+  Object {
+    "code": 4300000000,
+    "name": "湖南省",
+  },
+  Object {
+    "code": 4400000000,
+    "name": "广东省",
+  },
+  Object {
+    "code": 4500000000,
+    "name": "广西壮族自治区",
+  },
+  Object {
+    "code": 4600000000,
+    "name": "海南省",
+  },
+  Object {
+    "code": 5000000000,
+    "name": "重庆市",
+  },
+  Object {
+    "code": 5100000000,
+    "name": "四川省",
+  },
+  Object {
+    "code": 5200000000,
+    "name": "贵州省",
+  },
+  Object {
+    "code": 5300000000,
+    "name": "云南省",
+  },
+  Object {
+    "code": 5400000000,
+    "name": "西藏自治区",
+  },
+  Object {
+    "code": 6100000000,
+    "name": "陕西省",
+  },
+  Object {
+    "code": 6200000000,
+    "name": "甘肃省",
+  },
+  Object {
+    "code": 6300000000,
+    "name": "青海省",
+  },
+  Object {
+    "code": 6400000000,
+    "name": "宁夏回族自治区",
+  },
+  Object {
+    "code": 6500000000,
+    "name": "新疆维吾尔自治区",
+  },
+]
+`;
