@@ -1,6 +1,7 @@
 node_modules
 build/
 dist/
+temp/
 coverage/
 *.sw?
 .vscode

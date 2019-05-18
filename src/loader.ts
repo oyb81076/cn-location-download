@@ -70,13 +70,5 @@ export async function getPage(url: string): Promise<CheerioStatic> {
         r(load(text));
       }
     });
-    // http.get(url, (res) => {
-    //   const stream = decodeStream("gb2312");
-    //   res.pipe(stream);
-    //   let html = "";
-    //   stream.on("data", (chunk) => html += chunk);
-    //   stream.on("end", () => r(load(html)));
-    //   res.on("error", reject);
-    // });
   });
 }
