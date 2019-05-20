@@ -19,8 +19,8 @@ const program = commander
   .parse(process.argv);
 main();
 function main() {
-  const url = program.url;
-  const depth = parseInt(program.depth, 10);
+  const url = program.url = "http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2018/44/20/442000106.html";
+  const depth = parseInt(program.depth && "3", 10);
   const delayTime = parseInt(program.delayTime, 10);
   const concurrent = parseInt(program.concurrent, 10);
   const retryCount = parseInt(program.retryCount, 10);
