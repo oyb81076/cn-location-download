@@ -59,6 +59,9 @@ function processOne(
 
 function parseSource(source: ISource, content: string, { parse }: IOptions) {
   const dataArray = parse(source, content);
+  if (dataArray.length === 0) {
+    throw new Error(`url: ${source.url} 转换失败, 文件内容: ${content}`);
+  }
   source.children = dataArray.map((x): ISource => {
     return { url: x.url, depth: source.depth + 1, data: x };
   });
@@ -78,7 +81,11 @@ function fromAjax(url: string, filename: string, retryCount: number, delayTime: 
     .pipe(mergeMap(() => ajax(url)))
     .pipe(delay(delayTime))
     .pipe(retry(retryCount))
-    .pipe(mergeMap((content) => from(write(filename, content)).pipe(mapTo(content))));
+    .pipe(mergeMap((content) => fromWriteContent(filename, content)));
+}
+
+function fromWriteContent(filename: string, content: string): Observable<string> {
+  return from(write(filename, content)).pipe(mapTo(content));
 }
 
 function fromFile(filename: string): Observable<string> {

@@ -7,7 +7,7 @@ export const parse: IOptions["parse"] = ({ depth, url }, content) => {
   switch (depth) {
     case 0: return getProvinces(url, content);
     case 1: return getCities(url, content);
-    case 2: return getCounties(url, content);
+    case 2: return getCounties(url, content);  // 有些地方返回的就直接是 county, 有些则是 towns
     case 3: return getTowns(url, content);
     case 4: return getVillages(content);
     default: throw new Error("错误的depth参数");
@@ -25,15 +25,15 @@ export function getProvinces(url: string, content: string): IData[] {
   });
 }
 export function getCities(url: string, content: string): IData[] {
-  return parseBasicPage(url, content, ".citytr");
+  return parseBasicPage(url, content);
 }
 
 export function getCounties(url: string, content: string): IData[] {
-  return parseBasicPage(url, content, ".countytr");
+  return parseBasicPage(url, content);
 }
 
 export function getTowns(url: string, content: string): IData[] {
-  return parseBasicPage(url, content, ".towntr");
+  return parseBasicPage(url, content);
 }
 export function getVillages(content: string): IData[] {
   const $ = load(content);
@@ -43,9 +43,9 @@ export function getVillages(content: string): IData[] {
     return { name, code };
   });
 }
-export function parseBasicPage(url: string, content: string, selector: string): IData[] {
+export function parseBasicPage(url: string, content: string): IData[] {
   const $ = load(content);
-  return $(selector).toArray().map((tr) => {
+  return $(".citytr,.countytr,.towntr").toArray().map((tr) => {
     const $a = $(tr).find("a");
     if ($a.length === 0) {
       const children = tr.childNodes;

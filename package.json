@@ -4,6 +4,7 @@
   "license": "MIT",
   "scripts": {
     "build": "ts-node src/index.ts",
+    "clean": "rm -rf build dist temp coverage *.log",
     "test": "jest"
   },
   "dependencies": {
