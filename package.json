@@ -1,7 +1,6 @@
 {
   "name": "cn-location-download",
-  "version": "1.0.0",
-  "main": "index.js",
+  "version": "2.0.0",
   "license": "MIT",
   "scripts": {
     "build": "ts-node src/index.ts",
