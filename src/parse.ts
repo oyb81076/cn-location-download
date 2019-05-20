@@ -49,8 +49,8 @@ export function parseBasicPage(url: string, content: string, selector: string): 
     const $a = $(tr).find("a");
     if ($a.length === 0) {
       const children = tr.childNodes;
-      const name = $(children[0]).text();
-      const code = parseInt($(children[1]).text(), 10);
+      const code = parseInt($(children[0]).text(), 10);
+      const name = $(children[1]).text();
       return { name, code };
     } else {
       const codeString = $(tr).children().first().find("a").text();

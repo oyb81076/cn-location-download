@@ -1,5 +1,4 @@
 export interface IResult {
-  url?: string;
   name: string;
   code: number;
   children?: IResult[];

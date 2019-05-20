@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`depth=2 1`] = `
+exports[`should ok 1`] = `
 Array [
   Object {
     "code": 1100000000,
