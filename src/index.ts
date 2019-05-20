@@ -14,7 +14,7 @@ const program = commander
   .option("--depth [depth]", "搜索深度1:省,2:市,3:区,4:镇,5:办事处", "1")
   .option("--url [url]", "网址", "http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2018/index.html")
   .option("--delay-time [delayTime]", "每次请求间隔", "1000")
-  .option("--concurrent [concurrent]", "并发数量", "10")
+  .option("--concurrent [concurrent]", "并发数量", "5")
   .option("--retry-count [retryCount]", "下载失败的时候重复请求次数", "3")
   .parse(process.argv);
 main();
