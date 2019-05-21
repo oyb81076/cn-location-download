@@ -17,8 +17,6 @@ Options:
   --timeout [timeout]         超时时间(毫秒) (default: "10000")
   -h, --help                  output usage information
 ```
-# 注意事项
-不要把请求间隔和并发数调的太高, 容易造成对方站点的一些问题, 放在那里慢慢下载就可以了
 
 # 统计局统计用区划代码(code)编码规则
 {省:2位}{市:2位}{县:2位}{镇:3位}{办事处:3位}
@@ -30,3 +28,26 @@ Options:
 004	育才街道办事处
 016 药东社区居民委员会
 ```
+
+# 数据规则
+```ts
+export interface IResult {
+  name: string;
+  code: number;
+  children?: IResult[];
+}
+type DataJSON = IResult[]; // 最终数据
+```
+
+# 注意事项
+## 并发数量
+不要把请求间隔和并发数调的太高, 容易造成对方站点的一些问题, 放在那里慢慢下载就可以了
+## 顺序问题
+省 -> 市 -> 区 -> 镇 -> 街道, 这个顺序并不是固定的,  
+有时候会出现 省 -> 市 -> 镇 -> 街道
+省市区镇街道的判定标准依照code属性来判定
+* AA0000000000 省
+* AABB00000000 市
+* AABBCC000000 区
+* AABBCCDDD000 街道
+* AABBCCDDDEEE 居委会
