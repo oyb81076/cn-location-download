@@ -48,7 +48,7 @@ function onStart(url: string, { concurrent, delayTime, timeout, depth, retryCoun
 function onLine({ data: { data }, index }: { data: ISource, index: number }) {
   const out = [
     ["rows    ", index], // 总数
-    ["name    ", data && data.name || ""], // 当前的地区名称
+    ["code    ", data && data.code || ""], // 当前的地区名称
     ["fromAjax", fromAjaxCount], // ajax请求数
     ["fromFile", fromFileCount], // 本地缓存数
     ["tcp     ", tcpCount],      // 当前的tcp请求数量
