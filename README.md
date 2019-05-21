@@ -29,7 +29,7 @@ Options:
 016 药东社区居民委员会
 ```
 
-# 数据规则
+# 导出数据规则
 ```ts
 export interface IResult {
   name: string;
@@ -37,6 +37,21 @@ export interface IResult {
   children?: IResult[];
 }
 type DataJSON = IResult[]; // 最终数据
+```
+example:
+```json
+[
+  {
+    "code": 1100000000,
+    "name": "北京市",
+    "children": [
+      {
+        "code": 110100000000,
+        "name": "市辖区",
+        "children": [
+          {"code": 110101000000, "name": "东城区"},
+          {"code": 110102000000, "name": "西城区"},
+          {"code": 110105000000, "name": "朝阳区"},
 ```
 
 # 注意事项
