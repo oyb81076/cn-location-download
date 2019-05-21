@@ -42,18 +42,13 @@ export function createObserver(url: string, depth: number, opts: IOptions): IObs
   return { output$, complete$, start };
 }
 
-function processOne(
-  subject$: SourceSubject,
-  source: ISource,
-  opts: IOptions,
-): Observable<ISource> {
+function processOne(subject$: SourceSubject, source: ISource, opts: IOptions): Observable<ISource> {
   const { url } = source;
-  const { retryCount, depth, delayTime } = opts;
-  if (!url || source.depth >= depth) { return of(source); }
+  if (!url || source.depth >= opts.depth) { return of(source); }
   const filename = urlToFilename(url);
   return from(existsFile(filename))
     .pipe(tap((v) => v ? fromFileCount++ : fromAjaxCount++))
-    .pipe(mergeMap((exists) => exists ? fromFile(filename) : fromAjax(url, filename, retryCount, delayTime)))
+    .pipe(mergeMap((exists) => exists ? fromFile(filename) : fromAjax(url, filename, opts)))
     .pipe(tap((content) => parseSource(source, content, filename, url, opts))) // 将 setChildrenByContent
     .pipe(tap(() => publishNextSources(source, subject$, opts))) // publishSourceByChildren
     .pipe(tap(subject$.completeOne)) // completeOne
@@ -86,9 +81,9 @@ function publishNextSources({ children }: ISource, subject: SourceSubject, { dep
   children!.filter((x) => x.depth < depth && x.url).forEach(subject.nextOne);
 }
 
-function fromAjax(url: string, filename: string, retryCount: number, delayTime: number): Observable<string> {
+function fromAjax(url: string, filename: string, { timeout, delayTime, retryCount }: IOptions): Observable<string> {
   return of(1)
-    .pipe(mergeMap(() => ajax(url)))
+    .pipe(mergeMap(() => ajax(url, timeout)))
     .pipe(delay(delayTime))
     .pipe(retry(retryCount))
     .pipe(mergeMap((content) => fromWriteContent(filename, content)));

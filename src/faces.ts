@@ -19,5 +19,6 @@ export interface IOptions {
   retryCount: number;
   delayTime: number; // 请求延迟
   depth: number;
+  timeout: number;
   parse: (source: ISource, content: string) => IData[];
 }

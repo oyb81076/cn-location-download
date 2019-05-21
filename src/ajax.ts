@@ -9,10 +9,10 @@ export let errCount = 0;
 // const cookie = request.cookie(cookieString)!;
 // j.setCookie(cookie, "http://www.stats.gov.cn");
 
-export async function ajax(url: string): Promise<string> {
+export async function ajax(url: string, timeout: number): Promise<string> {
   return new Promise((resolve, reject) => {
     tcpCount++;
-    request.get(url, { encoding: null, timeout: 10000 }, (err, res, data) => {
+    request.get(url, { encoding: null, timeout }, (err, res, data) => {
       tcpCount--;
       if (err) {
         errCount++;

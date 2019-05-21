@@ -12,8 +12,9 @@ const program = commander
   .description("统计局爬虫")
   .option("--depth [depth]", "搜索深度1:省,2:市,3:区,4:镇,5:办事处", "1")
   .option("--url [url]", "网址", "http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2018/index.html")
-  .option("--delay-time [delayTime]", "每次请求间隔", "1000")
-  .option("--concurrent [concurrent]", "并发数量", "4")
+  .option("--delay-time [delayTime]", "每次请求间隔(毫秒)", "1000")
+  .option("--concurrent [concurrent]", "并发数量", "5")
+  .option("--timeout [timeout]", "超时时间(毫秒)", "10000")
   .option("--retry-count [retryCount]", "下载失败的时候重复请求次数", "3")
   .parse(process.argv);
 main();
@@ -23,17 +24,19 @@ function main() {
   const delayTime = parseInt(program.delayTime, 10);
   const concurrent = parseInt(program.concurrent, 10);
   const retryCount = parseInt(program.retryCount, 10);
-  const options: IOptions = { concurrent, delayTime, depth, parse, retryCount };
+  const timeout = parseInt(program.timeout, 10);
+  const options: IOptions = { concurrent, timeout, delayTime, depth, parse, retryCount };
   onStart(url, options);
   const { output$, complete$, start } = createObserver(url, 0, options);
   output$.subscribe(onLine);
   complete$.subscribe(onComplete);
   start();
 }
-function onStart(url: string, { concurrent, delayTime, depth, retryCount }: IOptions) {
+function onStart(url: string, { concurrent, delayTime, timeout, depth, retryCount }: IOptions) {
   const out = [
     ["url       ", url],
     ["concurrent", concurrent],
+    ["timeout   ", timeout],
     ["delayTime ", delayTime],
     ["depth     ", depth],
     ["retryCount", retryCount],
