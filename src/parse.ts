@@ -5,16 +5,16 @@ import { IData, IOptions } from "./faces";
 export const parse: IOptions["parse"] = ({ depth, url }, content) => {
   if (!url) { return []; }
   switch (depth) {
-    case 0: return getProvinces(url, content);
-    case 1: return parseBasicPage(url, content);
-    case 2: return parseBasicPage(url, content);  // 有些地方返回的就直接是 county, 有些则是 towns
-    case 3: return parseBasicPage(url, content);
-    case 4: return parseBasicPage(url, content);
+    case 0: return parseRoot(url, content);
+    case 1: return parseOthers(url, content);
+    case 2: return parseOthers(url, content);  // 有些地方返回的就直接是 county, 有些则是 towns
+    case 3: return parseOthers(url, content);
+    case 4: return parseOthers(url, content);
     default: throw new Error("错误的depth参数");
   }
 };
 
-export function getProvinces(url: string, content: string): IData[] {
+export function parseRoot(url: string, content: string): IData[] {
   const $ = load(content);
   return $(".provincetr a").toArray().map((el): IData => {
     const href = el.attribs.href;
@@ -25,23 +25,18 @@ export function getProvinces(url: string, content: string): IData[] {
   });
 }
 
-export function parseBasicPage(url: string, content: string): IData[] {
+export function parseOthers(url: string, content: string): IData[] {
   const $ = load(content);
   return $(".citytr,.countytr,.towntr,.villagetr").toArray().map((tr) => {
-    const $a = $(tr).find("a");
-    if ($a.length === 0) {
-      const children = tr.childNodes;
-      const code = parseInt($(children[0]).text(), 10);
-      const name = $(children[1]).text();
-      return { name, code };
+    const $tr = $(tr);
+    const $children = $tr.children();
+    const href = $tr.find("a").attr("href");
+    const code = parseInt($children.first().text(), 10);
+    const name = $children.last().text();
+    if (href) {
+      return { name, code, url: resolve(url, href) };
     } else {
-      const codeString = $(tr).children().first().find("a").text();
-      const code = parseInt(codeString, 10);
-      const a = $(tr).children().last().find("a");
-      const href = a.attr("href");
-      const name = a.text();
-      const link = resolve(url, href);
-      return { name, url: link, code };
+      return { name, code };
     }
   });
 }

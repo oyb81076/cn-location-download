@@ -3,8 +3,10 @@ import { from, Observable, of, Subject } from "rxjs";
 import { delay, last, map, mapTo, mergeMap, publish, refCount, retry, tap } from "rxjs/operators";
 import { ajax } from "./ajax";
 import { IOptions, IResult, ISource } from "./faces";
-import { existsFile, urlToFilename, write } from "./fileUtils";
+import { existsFile, renameToErrorSync, urlToFilename, write } from "./fileUtils";
 import { serialize } from "./serialize";
+export let fromAjaxCount = 0;
+export let fromFileCount = 0;
 class SourceSubject {
   public source$ = new Subject<ISource>();
   private count = 0;
@@ -50,17 +52,25 @@ function processOne(
   if (!url || source.depth >= depth) { return of(source); }
   const filename = urlToFilename(url);
   return from(existsFile(filename))
+    .pipe(tap((v) => v ? fromFileCount++ : fromAjaxCount++))
     .pipe(mergeMap((exists) => exists ? fromFile(filename) : fromAjax(url, filename, retryCount, delayTime)))
-    .pipe(tap((content) => parseSource(source, content, opts))) // 将 setChildrenByContent
+    .pipe(tap((content) => parseSource(source, content, filename, url, opts))) // 将 setChildrenByContent
     .pipe(tap(() => publishNextSources(source, subject$, opts))) // publishSourceByChildren
     .pipe(tap(subject$.completeOne)) // completeOne
     .pipe(mergeMap(() => mapSource(source, opts)));
 }
 
-function parseSource(source: ISource, content: string, { parse }: IOptions) {
+function parseSource(source: ISource, content: string, filename: string, url: string, { parse }: IOptions) {
   const dataArray = parse(source, content);
   if (dataArray.length === 0) {
-    throw new Error(`url: ${source.url} 转换失败, 文件内容: ${content}`);
+    const errorFilename = renameToErrorSync(filename, url);
+    throw new Error(`url: ${source.url} 转换失败, 未能发现数据, file://${errorFilename}`);
+  } else if (dataArray.find((x) => isNaN(x.code))) {
+    const errorFilename = renameToErrorSync(filename, url);
+    throw new Error(`url: ${source.url} 转换错误, 存在 code 为NaN, file://${errorFilename}`);
+  } else if (dataArray.find((x) => !x.name || /^\d+$/.test(x.name))) {
+    const errorFilename = renameToErrorSync(filename, url);
+    throw new Error(`url: ${source.url} 转换错误, 存在 name 为空或者是纯数字, file://${errorFilename}`);
   }
   source.children = dataArray.map((x): ISource => {
     return { url: x.url, depth: source.depth + 1, data: x };
